@@ -1,0 +1,15 @@
+[Unit]
+Description=MQ Exporter
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=mqm
+Group=mqm
+Type=simple
+Restart=on-failure
+Environment="MQSSLKEYR=/path/to/certificates/key"
+ExecStart=/bin/bash -c "/opt/o11y/mq_exporter -ibmmq.ccdtUrl=/path/to/ccdt.json -ibmmq.queueManager='YOUR_QUEUE_MANAGER' -ibmmq.client=true -ibmmq.monitoredQueues='YOUR_QUEUE_PATTERN.*' -ibmmq.monitoredChannels='*' -log.level='debug' -pollInterval='10s' -ibmmq.useStatus='true' -ibmmq.usePublications=false"
+
+[Install]
+WantedBy=multi-user.target

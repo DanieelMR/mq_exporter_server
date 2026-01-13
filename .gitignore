@@ -1,0 +1,23 @@
+*.kdb
+*.sth
+*.rdb
+*.crl
+*.arm
+*.p12
+*.crt
+*.key
+certificates/*.kdb
+certificates/*.sth
+
+# Archivos con datos sensibles de producción
+ccdt.json
+certificates/ccdt.json
+notes
+mq_exporter.service
+
+# Binarios
+mq_exporter
+
+# Solo subir los .example
+!ccdt.example.json
+!mq_exporter.service.example

@@ -1,0 +1,50 @@
+services:
+  mq-server:
+    image: icr.io/ibm-messaging/mq:latest
+    container_name: mq-server
+    hostname: mq-server
+    environment:
+      LICENSE: accept
+      MQ_QMGR_NAME: QMGR01
+      MQ_APP_PASSWORD: passw0rd
+      MQ_ADMIN_PASSWORD: passw0rd
+      AMQ_SSL_WEAK_CIPHER_ENABLE: TLS_RSA_WITH_AES_256_CBC_SHA256
+    ports:
+      - "1414:1414"
+      - "9443:9443"
+    volumes:
+      - ./certificates:/etc/mqm/pki/keys
+      - ./mq-server/scripts:/scripts
+      - mq-data:/mnt/mqm
+    networks:
+      mq-network:
+        aliases:
+          - mq-server
+    healthcheck:
+      test: ["CMD", "dspmq"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mq-client:
+    image: icr.io/ibm-messaging/mq:latest
+    container_name: mq-client
+    hostname: mqclient
+    environment:
+      LICENSE: accept
+    volumes:
+      - ./certificates:/certs
+      - ./mq-client/scripts:/scripts
+    networks:
+      - mq-network
+    depends_on:
+      mq-server:
+        condition: service_healthy
+    command: tail -f /dev/null
+
+networks:
+  mq-network:
+    driver: bridge
+
+volumes:
+  mq-data:

@@ -1,0 +1,25 @@
+{
+  "channel": [
+    {
+      "name": "YOUR_CHANNEL.SVRCONN",
+      "clientConnection": {
+        "connection": [
+          {
+            "host": "your-mq-server-hostname",
+            "port": 1414
+          }
+        ],
+        "queueManager": "YOUR_QUEUE_MANAGER"
+      },
+      "connectionManagement": {
+        "clientWeight": 1,
+        "affinity": "none"
+      },
+      "transmissionSecurity": {
+        "cipherSpecification": "TLS_RSA_WITH_AES_256_CBC_SHA256",
+        "certificateLabel": "your-certificate-label"
+      },
+      "type": "clientConnection"
+    }
+  ]
+}
